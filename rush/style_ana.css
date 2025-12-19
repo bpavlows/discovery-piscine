@@ -1,0 +1,226 @@
+/* ================================================= */
+/* 1. CONFIGURAÇÕES GERAIS E LAYOUT                  */
+/* ================================================= */
+
+html,
+body {
+    height: 100%;
+    scroll-behavior: smooth;
+    margin: 0;
+}
+
+.navbar {
+    background-color: #242614;
+    color: #bfbdb8;
+}
+
+#hab {
+    color: #8c7c69;
+}
+
+.rounded-circle {
+    width: 200px;
+    height: 200px;
+}
+
+.bg-custom-glass {
+    background-color: rgba(242, 242, 242, 0.3);
+    backdrop-filter: blur(5px);
+}
+.navbar-nav .nav-link {
+    color: #f1f2f0 !important; /* O !important força o branco sobre o padrão do Bootstrap */
+}
+
+.navbar-brand {
+    color: #f1f2f0 !important;
+}
+
+/* Cores dos Cards (IDs) */
+#card0,
+#card1,
+#card2,
+#card3 {
+    background-color: #8c7c69;
+}
+
+/* ================================================= */
+/* 2. PARALLAX (FUNDO)                               */
+/* ================================================= */
+
+.parallax {
+    background-image: url('img/backgroundA.jpg');
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
+
+.parallax-footer {
+    background-image: url('img/backgroundB.jpeg');
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    height: 50vh;
+}
+
+/* ================================================= */
+/* 3. CARDS DE HABILIDADES (ESTRUTURA BASE)          */
+/* ================================================= */
+
+.skills-container {
+    display: flex;
+    height: 400px;
+    width: 100%;
+    gap: 10px;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.skill-card {
+    flex: 1;
+    /* Padrão: fechado */
+    transition: flex 0.7s ease;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 15px;
+
+    /* Centralização */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    color: #fff;
+    background-color: #d9c1bf;
+    position: relative;
+}
+
+/* Título Base */
+.skill-card h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    transition: transform 0.5s ease;
+    z-index: 2;
+}
+
+/* Texto Base (Escondido) */
+.skill-card .desc {
+    opacity: 0;
+    max-height: 0;
+    margin: 0;
+    overflow: hidden;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+    padding: 0 15px;
+}
+/* Esconde o CONTEÚDO (wrapper) e não apenas o p */
+.skill-card .content {
+    opacity: 0;
+    max-height: 0;
+    margin: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+    overflow: hidden; /* Garante que lista não vaze */
+}
+
+/* Quando passar o mouse, mostra o .content */
+.skill-card:hover .content,
+.skills-container:not(:hover) .skill-card:nth-child(4) .content {
+    opacity: 1 !important;
+    max-height: 300px !important; /* Aumentei um pouco para caber a lista */
+    transform: translateY(0) !important;
+}
+
+/* ================================================= */
+/* 4. A LÓGICA DO ACORDEÃO (IMPORTANTE)              */
+/* ================================================= */
+
+/* --- CENÁRIO 1: O 4º CARD PADRÃO (SEM MOUSE NA TELA) --- */
+/* Ele fica aberto e COM TEXTO APARECENDO */
+.skill-card:nth-child(4) {
+    flex: 5;
+}
+
+.skill-card:nth-child(4) h3 {
+    transform: translateY(-20px);
+    /* Título sobe */
+}
+
+.skill-card:nth-child(4) .desc {
+    opacity: 1;
+    /* Texto visível */
+    max-height: 200px;
+    /* Espaço para o texto */
+    transform: translateY(0);
+    margin-top: 10px;
+}
+
+/* --- CENÁRIO 2: MOUSE ENTRA NO CONTAINER (RESET) --- */
+/* Se o mouse entrar na área, mas não tocou em nenhum card ainda,
+   forçamos o 4º card a se fechar para dar lugar ao novo card */
+.skills-container:hover .skill-card:nth-child(4) {
+    flex: 1;
+}
+
+.skills-container:hover .skill-card:nth-child(4) h3 {
+    transform: translateY(0);
+    /* Título desce */
+}
+
+.skills-container:hover .skill-card:nth-child(4) .desc {
+    opacity: 0;
+    /* Texto some */
+    max-height: 0;
+}
+
+/* --- CENÁRIO 3: MOUSE EM CIMA DE UM CARD ESPECÍFICO --- */
+/* Essa regra ganha de todas as outras (!important) */
+.skill-card:hover {
+    flex: 5 !important;
+}
+
+.skill-card:hover h3 {
+    transform: translateY(-20px) !important;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.skill-card:hover .desc {
+    opacity: 1 !important;
+    max-height: 200px !important;
+    transform: translateY(0) !important;
+    margin-top: 10px !important;
+    transition-delay: 0.2s;
+}
+
+/* ================================================= */
+/* 5. RESPONSIVIDADE (CELULAR)                       */
+/* ================================================= */
+
+@media (max-width: 768px) {
+    .skills-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .skill-card {
+        width: 100%;
+        height: 100px;
+        margin-bottom: 10px;
+    }
+
+    /* Ajuste para o 4º card no mobile não ficar gigante sem querer */
+    .skill-card:nth-child(4) {
+        flex: auto;
+    }
+
+    .skill-card:hover {
+        flex: none !important;
+        height: 250px;
+    }
+}
